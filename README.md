@@ -1,16 +1,40 @@
-# React + Vite
+# NOVA MOTORS
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Catálogo web de vehículos premium creado con React, Vite y Lucide React.
 
-Currently, two official plugins are available:
+## Desarrollo local
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Validaciones de producción:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm run lint
+npm run build
+```
 
-## Expanding the Oxlint configuration
+## Publicación en Oracle Cloud con Nginx
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+La VM debe tener abiertos los puertos TCP `22` y `80` en la lista de seguridad de Oracle Cloud. Después de conectarse por SSH:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y nginx git npm
+sudo rm -rf /var/www/html/*
+git clone --depth 1 https://github.com/Gaforsix777/OracleCloudPrueba.git /tmp/novamotors
+cd /tmp/novamotors
+npm install
+npm run build
+sudo cp -r dist/. /var/www/html/
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+La aplicación se sirve desde `/var/www/html`. Para comprobarla desde la VM:
+
+```bash
+curl http://localhost
+```
